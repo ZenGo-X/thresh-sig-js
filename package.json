@@ -1,5 +1,5 @@
 {
-  "name": "@kzen/thresh-sig",
+  "name": "@kzen-networks/thresh-sig",
   "version": "0.1.0",
   "description": "Threshold signatures based on two-party ECDSA",
   "main": "./dist/src/index.js",
@@ -13,7 +13,9 @@
     "build-rust": "cd ./native && cargo update && cd .. && neon build -r",
     "build-ts": "tsc",
     "build": "npm run build-rust && npm run build-ts",
-    "test": "mocha"
+    "test": "mocha",
+    "prepublishOnly": "npm test && npm run build",
+    "postinstall": "npm run build-rust"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -29,5 +31,8 @@
   "dependencies": {
     "@types/elliptic": "^6.4.8",
     "elliptic": "^6.4.1"
+  },
+  "engines": {
+    "node": ">= 8.9.0"
   }
 }
