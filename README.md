@@ -4,7 +4,7 @@ Javascript threshold signatures SDK using two-party ECDSA (for curve Secp256k1).
 
 ### Installation:
 ```
-$ npm install @kzen/thresh-sig
+$ npm install @kzen-networks/thresh-sig
 ```
 ### Build:
 ```
