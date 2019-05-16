@@ -17,7 +17,7 @@ $ npm run start-p1-server
 ```
 ### Example:
 ```js
-const { Party2 } = require('@kzen/thresh-sig');
+const { Party2 } = require('@kzen-networks/thresh-sig');
 const crypto = require('crypto');
 
 const P1_ENDPOINT = 'http://localhost:8000';
