@@ -2,20 +2,20 @@ Threshold signatures
 =====================================
 Javascript threshold signatures SDK using two-party ECDSA (for curve Secp256k1).
 
-### Installation:
-```
+## Installation:
+```bash
 $ npm install @kzen-networks/thresh-sig
 ```
-### Build:
-```
-$ npm run build
-```
-### Start party one's server: 
+## Usage:
+
+Start party one's server 
 (acts as the co-signer in the two-party signature scheme):
+```js
+const { Party1 } = require('@kzen-networks/thresh-sig');
+const p1 = new Party1();
+p1.launchServer();
 ```
-$ npm run start-p1-server
-```
-### Example:
+Party two:
 ```js
 const { Party2 } = require('@kzen-networks/thresh-sig');
 const crypto = require('crypto');
@@ -31,9 +31,4 @@ const P1_ENDPOINT = 'http://localhost:8000';
     console.log(JSON.stringify(signature));
     // {"r": <32-bytes-hex>,"s": <32-bytes-hex>,"recid": <0 or 1>}
 })();
-```
-
-### Test:
-```
-$ npm test
 ```

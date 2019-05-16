@@ -8,7 +8,7 @@
   "author": "Oded Leiba <oded@kzencorp.com>",
   "license": "MIT",
   "scripts": {
-    "start-p1-server": "node ./dist/src/party1-server.js",
+    "start-p1-server": "node ./demo/party1.js",
     "clean": "rm -rf dist",
     "build-rust": "cd ./native && cargo update && cd .. && neon build -r",
     "build-ts": "tsc",

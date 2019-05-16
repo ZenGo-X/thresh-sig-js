@@ -3,15 +3,22 @@ const {expect} = require('chai');
 const crypto = require('crypto');
 const EC = require('elliptic').ec;
 const ec = new EC('secp256k1');
+const {exec} = require('child_process');
 
 const P1_ENDPOINT = 'http://localhost:8000';
 
 describe('Threshold wallet tests', () => {
+    let p1;
     let p2;
     let p2MasterKeyShare;
 
-    before(() => {
+    before(async () => {
+        p1 = exec('npm run start-p1-server');
         p2 = new Party2(P1_ENDPOINT);
+    });
+
+    after(() => {
+        p1.kill();
     });
 
     it('generate master key share', async () => {
