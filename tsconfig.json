@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "declaration": true,                   /* Generates corresponding '.d.ts' file. */
+    "declarationDir": "./dist/types",
+    "outDir": "./dist/src",
+    "rootDir": "./src",/* Redirect output structure to the directory. */
+    "composite": true,                     /* Enable project compilation */
+    "strict": true,                           /* Enable all strict type-checking options. */
+    "strictPropertyInitialization": false,
+    "esModuleInterop": true                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

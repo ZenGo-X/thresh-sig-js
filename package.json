@@ -1,0 +1,33 @@
+{
+  "name": "@kzen/thresh-sig",
+  "version": "0.1.0",
+  "description": "Threshold signatures based on two-party ECDSA",
+  "main": "./dist/src/index.js",
+  "types": "./dist/types/index.d.ts",
+  "repository": "https://github.com/KZen-networks/thresh-sig.git",
+  "author": "Oded Leiba <oded@kzencorp.com>",
+  "license": "MIT",
+  "scripts": {
+    "start-p1-server": "node ./dist/src/party1-server.js",
+    "clean": "rm -rf dist",
+    "build-rust": "cd ./native && cargo update && cd .. && neon build -r",
+    "build-ts": "tsc",
+    "build": "npm run build-rust && npm run build-ts",
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.13.8",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "neon-cli": "^0.2.0",
+    "ts-mocha": "^6.0.0",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "@types/elliptic": "^6.4.8",
+    "elliptic": "^6.4.1"
+  }
+}
