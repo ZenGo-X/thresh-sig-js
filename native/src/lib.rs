@@ -2,17 +2,14 @@
 extern crate neon;
 
 pub mod protocols;
-pub mod server;
 
-use protocols::two_party_ecdsa::*;
-use server::p1_launch_server;
+use protocols::two_party_ecdsa;
 
 register_module!(mut cx, {
-    cx.export_function("p2_get_child_share", p2_get_child_share)?;
-    cx.export_function("p2_generate_master_key", p2_generate_master_key)?;
-    cx.export_function("p2_sign", p2_sign)?;
-
-    cx.export_function("p1_launch_server", p1_launch_server)?;
+    cx.export_function("ecdsa_p2_get_child_share", two_party_ecdsa::party2::get_child_share)?;
+    cx.export_function("ecdsa_p2_generate_master_key", two_party_ecdsa::party2::generate_master_key)?;
+    cx.export_function("ecdsa_p2_sign", two_party_ecdsa::party2::sign)?;
+    cx.export_function("ecdsa_p1_launch_server", two_party_ecdsa::party1::launch_server)?;
 
     Ok(())
 });

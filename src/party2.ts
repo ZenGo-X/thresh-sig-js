@@ -1,8 +1,8 @@
 const bindings : any = require('../../native');
 import {BigInt, EncryptionKey, FE, FE_BYTES_SIZE, GE} from './common';
 import util from 'util';
-bindings.p2_generate_master_key = util.promisify(bindings.p2_generate_master_key);
-bindings.p2_sign = util.promisify(bindings.p2_sign);
+bindings.ecdsa_p2_generate_master_key = util.promisify(bindings.ecdsa_p2_generate_master_key);
+bindings.ecdsa_p2_sign = util.promisify(bindings.ecdsa_p2_sign);
 
 import {curve, ec as EC} from 'elliptic';
 const CURVE = "secp256k1";
@@ -76,12 +76,12 @@ export class Party2 {
     }
 
     public async generateMasterKey(): Promise<Party2Share> {
-        const res = JSON.parse(await bindings.p2_generate_master_key(this.party1Endpoint));
+        const res = JSON.parse(await bindings.ecdsa_p2_generate_master_key(this.party1Endpoint));
         return Party2Share.fromPlain(res.master_key, res.id);
     }
 
     public getChildShare(p2MasterKeyShare: Party2Share, xPos: number, yPos: number): Party2Share {
-        const res = JSON.parse(bindings.p2_get_child_share(
+        const res = JSON.parse(bindings.ecdsa_p2_get_child_share(
             JSON.stringify(p2MasterKeyShare),
             BigInt.fromNumber(xPos),
             BigInt.fromNumber(yPos)));
@@ -90,7 +90,7 @@ export class Party2 {
     }
 
     public async sign(msgHash: Buffer, childPartyTwoShare: Party2Share, xPos: number, yPos: number): Promise<Signature> {
-        const res = JSON.parse(await bindings.p2_sign(
+        const res = JSON.parse(await bindings.ecdsa_p2_sign(
             this.party1Endpoint,
             JSON.stringify(msgHash.toString('hex')),
             JSON.stringify(childPartyTwoShare),

@@ -5,6 +5,6 @@ export class Party1 {
     public constructor() {}
 
     public launchServer() {
-        bindings.p1_launch_server();
+        bindings.ecdsa_p1_launch_server();
     }
 }

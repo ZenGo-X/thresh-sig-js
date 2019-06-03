@@ -20,6 +20,8 @@ serde_json = "1.0.26"
 serde_derive = "1.0.75"
 gotham-client = { git = "https://github.com/KZen-networks/gotham-city" }
 gotham-server = { git = "https://github.com/KZen-networks/gotham-city" }
+two-party-schnorr-client = { path = "../../two-party-schnorr/client" }
+two-party-schnorr-server = { path = "../../two-party-schnorr/server" }
 
 [dependencies.curv]
 git = "https://github.com/KZen-networks/curv"

@@ -15,6 +15,10 @@ describe('Threshold wallet tests', () => {
     before(async () => {
         p1 = exec('npm run start-p1-server');
         p2 = new Party2(P1_ENDPOINT);
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        await sleep(1000); // wait for server to launch
     });
 
     after(() => {
