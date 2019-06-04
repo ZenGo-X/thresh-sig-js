@@ -1,14 +1,10 @@
-extern crate kms;
-extern crate curv;
-
 extern crate serde;
 extern crate serde_json;
 extern crate client_lib;
 
 use neon::prelude::*;
-use self::client_lib::api::*;
-use self::kms::ecdsa::two_party::MasterKey2;
-use self::curv::BigInt;
+use self::client_lib::ecdsa::*;
+use self::client_lib::{BigInt, ClientShim};
 
 struct KeyGenTask {
     p1_endpoint: String,
@@ -17,10 +13,9 @@ struct KeyGenTask {
 struct SignTask {
     p1_endpoint: String,
     msg_hash: BigInt,
-    mk: MasterKey2,
+    share: PrivateShare,
     x: BigInt,
     y: BigInt,
-    id: String,
 }
 
 pub fn generate_master_key(mut cx: FunctionContext) -> JsResult<JsUndefined> {
@@ -44,30 +39,29 @@ pub fn get_child_share(mut cx: FunctionContext) -> JsResult<JsString> {
         return cx.throw_error("Invalid number of arguments");
     }
 
-    let party_two_master_key: MasterKey2 = serde_json::from_str(&cx.argument::<JsString>(0)?.value()).unwrap();
+    let party2_master_key_share: PrivateShare = serde_json::from_str(&cx.argument::<JsString>(0)?.value()).unwrap();
     let x: BigInt = serde_json::from_str(&cx.argument::<JsString>(1)?.value()).unwrap();
     let y: BigInt = serde_json::from_str(&cx.argument::<JsString>(2)?.value()).unwrap();
 
-    let child_master_key = party_two_master_key.get_child(vec![x, y]);
+    let party2_child_share = party2_master_key_share.get_child(vec![x, y]);
 
-    Ok(cx.string(serde_json::to_string(&child_master_key).unwrap()))
+    Ok(cx.string(serde_json::to_string(&party2_child_share).unwrap()))
 }
 
 pub fn sign(mut cx: FunctionContext) -> JsResult<JsUndefined> {
-    let expected_args = 7;
+    let expected_args = 6;
     if cx.len() != expected_args {
         return cx.throw_error("Invalid number of arguments");
     }
 
     let p1_endpoint: String = cx.argument::<JsString>(0)?.value();
     let msg_hash: BigInt = serde_json::from_str(&cx.argument::<JsString>(1)?.value()).unwrap();
-    let mk: MasterKey2 = serde_json::from_str(&cx.argument::<JsString>(2)?.value()).unwrap();
+    let share: PrivateShare = serde_json::from_str(&cx.argument::<JsString>(2)?.value()).unwrap();
     let x: BigInt = serde_json::from_str(&cx.argument::<JsString>(3)?.value()).unwrap();
     let y: BigInt = serde_json::from_str(&cx.argument::<JsString>(4)?.value()).unwrap();
-    let id: String = cx.argument::<JsString>(5)?.value();
-    let cb = cx.argument::<JsFunction>(6)?;
+    let cb = cx.argument::<JsFunction>(5)?;
 
-    let task = SignTask { p1_endpoint, msg_hash, mk, x, y, id };
+    let task = SignTask { p1_endpoint, msg_hash, share, x, y };
     task.schedule(cb);
 
     Ok(cx.undefined())
@@ -80,7 +74,7 @@ impl Task for SignTask {
 
     fn perform(&self) -> Result<Self::Output, Self::Error> {
         let client_shim = ClientShim::new(self.p1_endpoint.to_string(), None);
-        let signature = client_lib::api::sign(&client_shim, self.msg_hash.clone(), &self.mk, self.x.clone(), self.y.clone(), &self.id);
+        let signature = client_lib::ecdsa::sign(&client_shim, self.msg_hash.clone(), &self.share.master_key, self.x.clone(), self.y.clone(), &self.share.id);
         Ok(serde_json::to_string(&signature).unwrap())
     }
 

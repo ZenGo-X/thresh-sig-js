@@ -28,13 +28,13 @@ describe('Threshold wallet tests', () => {
     it('generate master key share', async () => {
         p2MasterKeyShare = await p2.generateMasterKey();
         expect(p2MasterKeyShare).to.be.a('object');
-        expect(p2MasterKeyShare.p1MasterKeyId).to.be.a('string');
+        expect(p2MasterKeyShare.id).to.be.a('string');
     });
 
     it('get child share', async () => {
         const p2ChildShare = p2.getChildShare(p2MasterKeyShare, 0, 0);
         expect(p2ChildShare).to.be.a('object');
-        expect(p2ChildShare.p1MasterKeyId).to.be.a('string');
+        expect(p2ChildShare.id).to.be.a('string');
     });
 
     it('get child master key share should be deterministic', () => {
