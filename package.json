@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@types/elliptic": "^6.4.8",
+    "elliptic": "^6.4.1",
     "neon-cli": "^0.2.0"
   },
   "engines": {
