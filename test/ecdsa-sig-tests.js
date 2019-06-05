@@ -1,4 +1,4 @@
-const {Party2} = require('../dist/src');
+const {EcdsaParty2} = require('../dist/src');
 const {expect} = require('chai');
 const crypto = require('crypto');
 const EC = require('elliptic').ec;
@@ -7,14 +7,18 @@ const {exec} = require('child_process');
 
 const P1_ENDPOINT = 'http://localhost:8000';
 
-describe('Threshold wallet tests', () => {
+describe('Two-Party ECDSA tests', () => {
     let p1;
     let p2;
     let p2MasterKeyShare;
 
     before(async () => {
         p1 = exec('npm run start-p1-server');
-        p2 = new Party2(P1_ENDPOINT);
+        p2 = new EcdsaParty2(P1_ENDPOINT);
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        await sleep(1000); // wait for server to launch
     });
 
     after(() => {
@@ -24,13 +28,13 @@ describe('Threshold wallet tests', () => {
     it('generate master key share', async () => {
         p2MasterKeyShare = await p2.generateMasterKey();
         expect(p2MasterKeyShare).to.be.a('object');
-        expect(p2MasterKeyShare.p1MasterKeyId).to.be.a('string');
+        expect(p2MasterKeyShare.id).to.be.a('string');
     });
 
     it('get child share', async () => {
         const p2ChildShare = p2.getChildShare(p2MasterKeyShare, 0, 0);
         expect(p2ChildShare).to.be.a('object');
-        expect(p2ChildShare.p1MasterKeyId).to.be.a('string');
+        expect(p2ChildShare.id).to.be.a('string');
     });
 
     it('get child master key share should be deterministic', () => {

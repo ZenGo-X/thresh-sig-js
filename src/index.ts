@@ -1,2 +1,2 @@
 export * from './party1';
-export * from './party2';
+export * from './party2/';

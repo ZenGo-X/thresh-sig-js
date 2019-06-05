@@ -18,12 +18,5 @@ neon = "0.2.0"
 serde = "1.0.75"
 serde_json = "1.0.26"
 serde_derive = "1.0.75"
-gotham-client = { git = "https://github.com/KZen-networks/gotham-city" }
-gotham-server = { git = "https://github.com/KZen-networks/gotham-city" }
-
-[dependencies.curv]
-git = "https://github.com/KZen-networks/curv"
-features =  ["ec_secp256k1"]
-
-[dependencies.kms]
-git = "https://github.com/KZen-networks/kms"
+gotham-client = { git = "https://github.com/KZen-networks/gotham-city", branch = "feature/two-party-schnorr" }
+gotham-server = { git = "https://github.com/KZen-networks/gotham-city", branch = "feature/two-party-schnorr" }
