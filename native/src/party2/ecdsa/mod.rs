@@ -90,8 +90,8 @@ impl Task for KeyGenTask {
 
     fn perform(&self) -> Result<Self::Output, Self::Error> {
         let client_shim = ClientShim::new(self.p1_endpoint.to_string(), None);
-        let master_key_client = get_master_key(&client_shim);
-        Ok(serde_json::to_string(&master_key_client).unwrap())
+        let master_key_share = get_master_key(&client_shim);
+        Ok(serde_json::to_string(&master_key_share).unwrap())
     }
 
     fn complete(self, mut cx: TaskContext, result: Result<Self::Output, Self::Error>) -> JsResult<Self::JsEvent> {

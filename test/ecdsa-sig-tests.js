@@ -1,4 +1,4 @@
-const {Party2} = require('../dist/src');
+const {EcdsaParty2} = require('../dist/src');
 const {expect} = require('chai');
 const crypto = require('crypto');
 const EC = require('elliptic').ec;
@@ -7,14 +7,14 @@ const {exec} = require('child_process');
 
 const P1_ENDPOINT = 'http://localhost:8000';
 
-describe('Threshold wallet tests', () => {
+describe('Two-Party ECDSA tests', () => {
     let p1;
     let p2;
     let p2MasterKeyShare;
 
     before(async () => {
         p1 = exec('npm run start-p1-server');
-        p2 = new Party2(P1_ENDPOINT);
+        p2 = new EcdsaParty2(P1_ENDPOINT);
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }

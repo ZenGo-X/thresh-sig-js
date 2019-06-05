@@ -1,5 +1,5 @@
-const bindings : any = require('../../native');
-import {BigInt, EncryptionKey, FE, FE_BYTES_SIZE, GE} from './common';
+const bindings : any = require('../../../native');
+import {BigInt, EncryptionKey, FE, FE_BYTES_SIZE, GE} from '../common';
 import util from 'util';
 bindings.p2_ecdsa_generate_master_key = util.promisify(bindings.p2_ecdsa_generate_master_key);
 bindings.p2_ecdsa_sign = util.promisify(bindings.p2_ecdsa_sign);
@@ -26,7 +26,7 @@ interface Party2MasterKey {
     chain_code: BigInt;
 }
 
-export class Party2Share {
+export class EcdsaParty2Share {
     public id: string;
     private master_key: Party2MasterKey;
 
@@ -38,7 +38,7 @@ export class Party2Share {
     }
 
     public static fromPlain(plain: any) {
-        return new Party2Share(
+        return new EcdsaParty2Share(
             plain.id,
             plain.master_key);
     }
@@ -50,11 +50,11 @@ export class Party2Share {
     }
 }
 
-export class Signature {
+export class EcdsaSignature {
     constructor(public r: BigInt, public s: BigInt, public recid: number) { }
 
     public static fromPlain(plain: any) {
-        return new Signature(plain.r, plain.s, plain.recid);
+        return new EcdsaSignature(plain.r, plain.s, plain.recid);
     }
 
     public toBuffer(): Buffer {
@@ -65,7 +65,7 @@ export class Signature {
     }
 }
 
-export class Party2 {
+export class EcdsaParty2 {
 
     private party1Endpoint: string;
 
@@ -73,21 +73,20 @@ export class Party2 {
         this.party1Endpoint = party1Endpoint;
     }
 
-    public async generateMasterKey(): Promise<Party2Share> {
+    public async generateMasterKey(): Promise<EcdsaParty2Share> {
         const res = JSON.parse(await bindings.p2_ecdsa_generate_master_key(this.party1Endpoint));
-        const ps = Party2Share.fromPlain(res);
-        return ps;
+        return EcdsaParty2Share.fromPlain(res);
     }
 
-    public getChildShare(p2MasterKeyShare: Party2Share, xPos: number, yPos: number): Party2Share {
+    public getChildShare(p2MasterKeyShare: EcdsaParty2Share, xPos: number, yPos: number): EcdsaParty2Share {
         const res = JSON.parse(bindings.p2_ecdsa_get_child_share(
             JSON.stringify(p2MasterKeyShare),
             BigInt.fromNumber(xPos),
             BigInt.fromNumber(yPos)));
-        return Party2Share.fromPlain(res);
+        return EcdsaParty2Share.fromPlain(res);
     }
 
-    public async sign(msgHash: Buffer, childPartyTwoShare: Party2Share, xPos: number, yPos: number): Promise<Signature> {
+    public async sign(msgHash: Buffer, childPartyTwoShare: EcdsaParty2Share, xPos: number, yPos: number): Promise<EcdsaSignature> {
         const res = JSON.parse(await bindings.p2_ecdsa_sign(
             this.party1Endpoint,
             JSON.stringify(msgHash.toString('hex')),
@@ -95,6 +94,6 @@ export class Party2 {
             BigInt.fromNumber(xPos),
             BigInt.fromNumber(yPos)));
 
-        return Signature.fromPlain(res);
+        return EcdsaSignature.fromPlain(res);
     }
 }
