@@ -4,7 +4,7 @@ import util from 'util';
 bindings.p2_ecdsa_generate_master_key = util.promisify(bindings.p2_ecdsa_generate_master_key);
 bindings.p2_ecdsa_sign = util.promisify(bindings.p2_ecdsa_sign);
 
-import {curve, ec as EC} from 'elliptic';
+import {curve, ec as EC} from 'kzen-elliptic';
 const CURVE = "secp256k1";
 const ec = new EC(CURVE);
 

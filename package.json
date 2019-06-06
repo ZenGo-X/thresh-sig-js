@@ -30,11 +30,12 @@
     "typescript": "^3.4.5"
   },
   "dependencies": {
-    "@types/elliptic": "^6.4.8",
-    "elliptic": "^6.4.1",
+    "@types/kzen-elliptic": "npm:@types/elliptic@^6.4.8",
+    "kzen-elliptic": "npm:elliptic@^6.4.1",
     "neon-cli": "^0.2.0"
   },
   "engines": {
-    "node": ">= 8.9.0"
+    "node": ">= 8.9.0",
+    "npm": ">= 6.9.0"
   }
 }
