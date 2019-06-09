@@ -1,6 +1,6 @@
-Threshold signatures
+Two Party signatures JS SDK 
 =====================================
-Javascript threshold signatures SDK (for curve Secp256k1).<br>
+Javascript SDK (for curve Secp256k1).<br>
 Supports:
 * Two-Party ECDSA
 * Two-Party Schnorr (compatible with [Zilliqa's Schnorr signatures](https://github.com/Zilliqa/Zilliqa-JavaScript-Library/tree/dev/packages/zilliqa-js-crypto))
