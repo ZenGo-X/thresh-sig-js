@@ -14,5 +14,8 @@ register_module!(mut cx, {
     cx.export_function("p2_schnorr_generate_key", party2::schnorr::generate_key)?;
     cx.export_function("p2_schnorr_sign", party2::schnorr::sign)?;
 
+    cx.export_function("p2_eddsa_generate_key", party2::eddsa::generate_key)?;
+    cx.export_function("p2_eddsa_sign", party2::eddsa::sign)?;
+
     Ok(())
 });

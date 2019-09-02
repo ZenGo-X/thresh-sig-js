@@ -3,7 +3,7 @@ extern crate serde_json;
 extern crate client_lib;
 
 use neon::prelude::*;
-use self::client_lib::ecdsa::*;
+use self::client_lib::*;
 use self::client_lib::{BigInt, ClientShim};
 
 struct KeyGenTask {
@@ -13,12 +13,12 @@ struct KeyGenTask {
 struct SignTask {
     p1_endpoint: String,
     msg_hash: BigInt,
-    share: PrivateShare,
-    x: BigInt,
-    y: BigInt,
+    key_pair: KeyPair,
+    agg_pub_key: KeyAgg,
+    id: String,
 }
 
-pub fn generate_master_key(mut cx: FunctionContext) -> JsResult<JsUndefined> {
+pub fn generate_key(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     let expected_args = 2;
     if cx.len() != expected_args {
         return cx.throw_error("Invalid number of arguments");
@@ -33,21 +33,6 @@ pub fn generate_master_key(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     Ok(cx.undefined())
 }
 
-pub fn get_child_share(mut cx: FunctionContext) -> JsResult<JsString> {
-    let expected_args = 3;
-    if cx.len() != expected_args {
-        return cx.throw_error("Invalid number of arguments");
-    }
-
-    let party2_master_key_share: PrivateShare = serde_json::from_str(&cx.argument::<JsString>(0)?.value()).unwrap();
-    let x: BigInt = serde_json::from_str(&cx.argument::<JsString>(1)?.value()).unwrap();
-    let y: BigInt = serde_json::from_str(&cx.argument::<JsString>(2)?.value()).unwrap();
-
-    let party2_child_share = party2_master_key_share.get_child(vec![x, y]);
-
-    Ok(cx.string(serde_json::to_string(&party2_child_share).unwrap()))
-}
-
 pub fn sign(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     let expected_args = 6;
     if cx.len() != expected_args {
@@ -55,39 +40,27 @@ pub fn sign(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     }
 
     let p1_endpoint: String = cx.argument::<JsString>(0)?.value();
+    println!("p1_endpoint = {}", p1_endpoint);
     let msg_hash: BigInt = serde_json::from_str(&cx.argument::<JsString>(1)?.value()).unwrap();
-    let share: PrivateShare = serde_json::from_str(&cx.argument::<JsString>(2)?.value()).unwrap();
-    let x: BigInt = serde_json::from_str(&cx.argument::<JsString>(3)?.value()).unwrap();
-    let y: BigInt = serde_json::from_str(&cx.argument::<JsString>(4)?.value()).unwrap();
+    println!("#0");
+    let mut key_pair: KeyPair = serde_json::from_str(&cx.argument::<JsString>(2)?.value()).unwrap();
+    println!("#1");
+    let mut agg_pub_key: KeyAgg = serde_json::from_str(&cx.argument::<JsString>(3)?.value()).unwrap();
+    println!("#2");
+    let id: String = cx.argument::<JsString>(4)?.value();
+    println!("#3");
     let cb = cx.argument::<JsFunction>(5)?;
+    println!("#4");
 
-    let task = SignTask { p1_endpoint, msg_hash, share, x, y };
+    let eight: FE = ECScalar::from(&BigInt::from(8));
+    let eight_inverse: FE = eight.invert();
+    key_pair.public_key = key_pair.public_key * &eight_inverse;
+    agg_pub_key.apk = agg_pub_key.apk * &eight_inverse;
+
+    let task = SignTask { p1_endpoint, msg_hash, key_pair, agg_pub_key, id };
     task.schedule(cb);
 
     Ok(cx.undefined())
-}
-
-impl Task for SignTask {
-    type Output = String;
-    type Error = String;
-    type JsEvent = JsString;
-
-    fn perform(&self) -> Result<Self::Output, Self::Error> {
-        let client_shim = ClientShim::new(self.p1_endpoint.to_string(), None);
-        let signature = client_lib::ecdsa::sign(
-            &client_shim,
-            self.msg_hash.clone(),
-            &self.share.master_key,
-            self.x.clone(),
-            self.y.clone(),
-            &self.share.id)
-            .expect("ECDSA signature failed");
-        Ok(serde_json::to_string(&signature).unwrap())
-    }
-
-    fn complete(self, mut cx: TaskContext, result: Result<Self::Output, Self::Error>) -> JsResult<Self::JsEvent> {
-        Ok(cx.string(result.unwrap()))
-    }
 }
 
 impl Task for KeyGenTask {
@@ -97,8 +70,9 @@ impl Task for KeyGenTask {
 
     fn perform(&self) -> Result<Self::Output, Self::Error> {
         let client_shim = ClientShim::new(self.p1_endpoint.to_string(), None);
-        let master_key_share = get_master_key(&client_shim);
-        Ok(serde_json::to_string(&master_key_share).unwrap())
+        let share = client_lib::eddsa::generate_key(&client_shim)
+            .expect("EdDSA KeyGen failed");
+        Ok(serde_json::to_string(&share).unwrap())
     }
 
     fn complete(self, mut cx: TaskContext, result: Result<Self::Output, Self::Error>) -> JsResult<Self::JsEvent> {
@@ -106,3 +80,27 @@ impl Task for KeyGenTask {
     }
 }
 
+impl Task for SignTask {
+    type Output = String;
+    type Error = String;
+    type JsEvent = JsString;
+
+    fn perform(&self) -> Result<Self::Output, Self::Error> {
+        println!("perform #1");
+        let client_shim = ClientShim::new(self.p1_endpoint.to_string(), None);
+        println!("perform #2");
+        let signature = client_lib::eddsa::sign(
+            &client_shim,
+            self.msg_hash.clone(),
+            &self.key_pair,
+            &self.agg_pub_key,
+            &self.id)
+            .expect("EdDSA signature failed");
+        println!("perform #3");
+        Ok(serde_json::to_string(&signature).unwrap())
+    }
+
+    fn complete(self, mut cx: TaskContext, result: Result<Self::Output, Self::Error>) -> JsResult<Self::JsEvent> {
+        Ok(cx.string(result.unwrap()))
+    }
+}
