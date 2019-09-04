@@ -1,11 +1,15 @@
 const bindings : any = require('../../../native');
-import {BigInt} from "../common";
+import {BigInt, toLittleEndian} from "../common";
 import util from 'util';
 bindings.p2_eddsa_generate_key = util.promisify(bindings.p2_eddsa_generate_key);
 bindings.p2_eddsa_sign = util.promisify(bindings.p2_eddsa_sign);
 
 const SCALAR_BYTES_SIZE = 32;
 const POINT_BYTES_SIZE = 32;
+
+import {eddsa as EdDSA} from 'kzen-elliptic';
+const CURVE = 'ed25519';
+const ec = new EdDSA(CURVE);
 
 interface KeyPair {
     public_key: Ed25519Point;
@@ -42,6 +46,11 @@ class Ed25519Party2Share {
         return this.id;
     }
 
+    public getPublicKey(): EdDSA.Point {
+        const apkBytes = this.agg_pub_key.apk.bytes_str.padStart(POINT_BYTES_SIZE * 2, '0');
+        return ec.decodePoint(apkBytes);
+    }
+
     // expects a plain JS array as returned from the Rust bindings
     public static fromPlain(plain: any): Ed25519Party2Share {
         return new Ed25519Party2Share(
@@ -60,10 +69,10 @@ export class Ed25519Signature {
     }
 
     public toBuffer(): Buffer {
-        const signatureBuf: Buffer = Buffer.allocUnsafe(POINT_BYTES_SIZE + SCALAR_BYTES_SIZE);
-        Buffer.from(this.R.bytes_str.padStart(POINT_BYTES_SIZE * 2, '0'), 'hex').copy(signatureBuf, 0);
-        Buffer.from(this.s.padStart(SCALAR_BYTES_SIZE * 2, '0'), 'hex').copy(signatureBuf, POINT_BYTES_SIZE);
-        return signatureBuf;
+        const RBuf = Buffer.from(this.R.bytes_str.padStart(POINT_BYTES_SIZE * 2, '0'), 'hex');
+        const sBuf = Buffer.from(this.s.padStart(SCALAR_BYTES_SIZE * 2, '0'), 'hex');
+        const sBufLE = toLittleEndian(sBuf);
+        return Buffer.concat([RBuf, sBufLE], POINT_BYTES_SIZE + SCALAR_BYTES_SIZE);
     }
 }
 

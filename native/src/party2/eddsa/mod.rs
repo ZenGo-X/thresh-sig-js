@@ -40,17 +40,11 @@ pub fn sign(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     }
 
     let p1_endpoint: String = cx.argument::<JsString>(0)?.value();
-    println!("p1_endpoint = {}", p1_endpoint);
     let msg_hash: BigInt = serde_json::from_str(&cx.argument::<JsString>(1)?.value()).unwrap();
-    println!("#0");
     let mut key_pair: KeyPair = serde_json::from_str(&cx.argument::<JsString>(2)?.value()).unwrap();
-    println!("#1");
     let mut agg_pub_key: KeyAgg = serde_json::from_str(&cx.argument::<JsString>(3)?.value()).unwrap();
-    println!("#2");
     let id: String = cx.argument::<JsString>(4)?.value();
-    println!("#3");
     let cb = cx.argument::<JsFunction>(5)?;
-    println!("#4");
 
     let eight: FE = ECScalar::from(&BigInt::from(8));
     let eight_inverse: FE = eight.invert();
@@ -86,9 +80,7 @@ impl Task for SignTask {
     type JsEvent = JsString;
 
     fn perform(&self) -> Result<Self::Output, Self::Error> {
-        println!("perform #1");
         let client_shim = ClientShim::new(self.p1_endpoint.to_string(), None);
-        println!("perform #2");
         let signature = client_lib::eddsa::sign(
             &client_shim,
             self.msg_hash.clone(),
@@ -96,7 +88,6 @@ impl Task for SignTask {
             &self.agg_pub_key,
             &self.id)
             .expect("EdDSA signature failed");
-        println!("perform #3");
         Ok(serde_json::to_string(&signature).unwrap())
     }
 
