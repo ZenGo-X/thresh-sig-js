@@ -74,7 +74,14 @@ impl Task for SignTask {
 
     fn perform(&self) -> Result<Self::Output, Self::Error> {
         let client_shim = ClientShim::new(self.p1_endpoint.to_string(), None);
-        let signature = client_lib::ecdsa::sign(&client_shim, self.msg_hash.clone(), &self.share.master_key, self.x.clone(), self.y.clone(), &self.share.id);
+        let signature = client_lib::ecdsa::sign(
+                &client_shim,
+                self.msg_hash.clone(),
+                &self.share.master_key,
+                self.x.clone(),
+                self.y.clone(),
+                &self.share.id)
+            .expect("ECDSA signature failed");
         Ok(serde_json::to_string(&signature).unwrap())
     }
 
