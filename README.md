@@ -1,9 +1,12 @@
 Two Party signatures JS SDK 
 =====================================
-Javascript SDK (for curve Secp256k1).<br>
 Supports:
-* Two-Party ECDSA
-* Two-Party Schnorr (compatible with [Zilliqa's Schnorr signatures](https://github.com/Zilliqa/Zilliqa-JavaScript-Library/tree/dev/packages/zilliqa-js-crypto))
+
+|        Algorithm         |   Curve   |    Compatible blockchains       | 
+|-------------------------------|------------------------|------------------------|
+|    **ECDSA**    |      Secp256k1 |      Bitcoin, Ethereum           |
+|    **Schnorr**    |        Secp256k1 | Zilliqa |
+|    **EdDSA** | Curve25519 |  Tezos, Libra |
 
 ## Installation:
 1. Install [nightly Rust](https://github.com/rust-lang/rustup.rs#installation):
