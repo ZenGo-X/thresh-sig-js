@@ -1,6 +1,6 @@
 {
   "name": "@kzen-networks/thresh-sig",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Threshold signatures based on two-party ECDSA",
   "main": "./dist/src/index.js",
   "types": "./dist/types/index.d.ts",
@@ -21,7 +21,7 @@
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.13.8",
-    "@zilliqa-js/crypto": "^0.6.3",
+    "@zilliqa-js/crypto": "^0.7.5",
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
     "ts-mocha": "^6.0.0",
