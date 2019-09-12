@@ -63,6 +63,25 @@ const P1_ENDPOINT = 'http://localhost:8000';
 })();
 ```
 
+EdDSA party two:
+```js
+const { Ed25519Party2 } = require('@kzen-networks/thresh-sig');
+const crypto = require('crypto');
+
+const P1_ENDPOINT = 'http://localhost:8000';
+
+(async () => {
+    const party2 = new Ed25519Party2(P1_ENDPOINT);
+    const party2Share = await party2.generateKey();
+    console.log(party2Share.getAggregatedPublicKey().apk.bytes_str);
+    // <32-bytes-hex>
+    const msgHash = crypto.createHash('sha256').update('some message').digest();
+    const signature = await party2.sign(msgHash, party2Share);
+    console.log(JSON.stringify(signature));
+    // {"R":{"bytes_str":<32-bytes-hex>},"s":<32-bytes-hex>}
+})()
+```
+
 ## Demo:
 
 You can run a command line demo and see the two-party signing protocol in action. <br>
@@ -90,6 +109,11 @@ $ node ./demo/ecdsa-party2.js
 ```
 $ node ./demo/schnorr-party2.js
 {"e":"d960b3fe66d2dc1c2115c93b3e674344d73063c22148ff3bc8d67493ffb19814","s":"ed2ecaa8882ccaac946bf951835033d4326aaff2e1e466ecf1fdda32a6fc762b"}
+```
+3. EdDSA:
+```
+$ node ./demo/eddsa-party2.js
+{"R":{"bytes_str":"d86c5da0a257fd66acd007776f28d9f7a5083f84c66a41c98104c11cc5e9eaa3"},"s":"9964b5053843d6f6ddfaa25977f14f55676ae8a0e6bf89eafb412f417257abc"}
 ```
 
 ## Contact
