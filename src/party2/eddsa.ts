@@ -1,4 +1,5 @@
-const bindings : any = require('../../../native');
+const path = require('path');
+const bindings : any = require(path.join(__dirname, '../../../native'));
 import {BigInt, toLittleEndian} from "../common";
 import util from 'util';
 bindings.p2_eddsa_generate_key = util.promisify(bindings.p2_eddsa_generate_key);
@@ -26,7 +27,7 @@ interface KeyAgg {
     hash: Ed25519Scalar;
 }
 
-class Ed25519Party2Share {
+export class Ed25519Party2Share {
 
     public constructor(
         private key_pair: KeyPair,

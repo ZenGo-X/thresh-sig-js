@@ -1,4 +1,5 @@
-const bindings : any = require('../../../native');
+const path = require('path');
+const bindings : any = require(path.join(__dirname, '../../../native'));
 import {BigInt, EncryptionKey, FE, FE_BYTES_SIZE, GE} from '../common';
 import util from 'util';
 bindings.p2_ecdsa_generate_master_key = util.promisify(bindings.p2_ecdsa_generate_master_key);
