@@ -10,7 +10,7 @@
   "scripts": {
     "start-p1-server": "node ./demo/party1.js",
     "clean": "rm -rf dist",
-    "build-rust": "cd ./native && cargo update && cd .. && ./node_modules/.bin/neon build -r",
+    "build-rust": "neon build -r",
     "build-ts": "tsc",
     "build": "npm run build-rust && npm run build-ts",
     "test": "mocha",
