@@ -5,7 +5,7 @@ import util from 'util';
 bindings.p2_schnorr_generate_key = util.promisify(bindings.p2_schnorr_generate_key);
 bindings.p2_schnorr_sign = util.promisify(bindings.p2_schnorr_sign);
 
-import {curve, ec as EC} from 'kzen-elliptic';
+import {curve, ec as EC} from 'elliptic';
 const CURVE = "secp256k1";
 const ec = new EC(CURVE);
 

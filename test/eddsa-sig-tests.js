@@ -1,7 +1,7 @@
 const {Ed25519Party2} = require('../dist/src');
 const {expect} = require('chai');
 const crypto = require('crypto');
-const EdDSA = require('kzen-elliptic').eddsa;
+const EdDSA = require('elliptic').eddsa;
 const eddsa = new EdDSA('ed25519');
 const {exec} = require('child_process');
 

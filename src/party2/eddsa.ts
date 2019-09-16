@@ -8,7 +8,7 @@ bindings.p2_eddsa_sign = util.promisify(bindings.p2_eddsa_sign);
 const SCALAR_BYTES_SIZE = 32;
 const POINT_BYTES_SIZE = 32;
 
-import {eddsa as EdDSA} from 'kzen-elliptic';
+import {eddsa as EdDSA} from 'elliptic';
 const CURVE = 'ed25519';
 const ec = new EdDSA(CURVE);
 

@@ -1,7 +1,7 @@
 const {EcdsaParty2} = require('../dist/src');
 const {expect} = require('chai');
 const crypto = require('crypto');
-const EC = require('kzen-elliptic').ec;
+const EC = require('elliptic').ec;
 const ec = new EC('secp256k1');
 const {exec} = require('child_process');
 
