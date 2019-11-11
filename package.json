@@ -1,6 +1,6 @@
 {
   "name": "@kzen-networks/thresh-sig",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Threshold signatures based on two-party ECDSA",
   "main": "./dist/src/index.js",
   "types": "./dist/types/index.d.ts",
