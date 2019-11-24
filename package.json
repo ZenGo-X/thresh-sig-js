@@ -14,7 +14,7 @@
     "build-ts": "tsc",
     "build": "npm run build-rust && npm run build-ts",
     "test": "mocha",
-    "prepublishOnly": "npm test && npm run build",
+    "prepublishOnly": "npm run build && npm test",
     "postinstall": "npm run build-rust"
   },
   "devDependencies": {
