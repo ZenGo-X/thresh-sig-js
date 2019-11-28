@@ -1,6 +1,6 @@
 const { Ed25519Party2 } = require('../dist/src');
 const crypto = require('crypto');
-const EdDSA = require('kzen-elliptic').eddsa;
+const EdDSA = require('elliptic').eddsa;
 const eddsa = new EdDSA('ed25519');
 
 const P1_ENDPOINT = 'http://localhost:8000';
