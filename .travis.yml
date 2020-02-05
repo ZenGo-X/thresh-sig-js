@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - 10
+  - stable
+
+before_install:
+  - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  - rustup override set nightly-2019-07-10
+
+script:
+  - npm run build
+  - npm test

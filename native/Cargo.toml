@@ -5,6 +5,7 @@ authors = ["oded@kzencorp.com <oded@kzencorp.com>"]
 license = "MIT"
 build = "build.rs"
 exclude = ["artifacts.json", "index.node"]
+rust = "nightly: 2019-07-10"
 
 [lib]
 name = "mpc_bindings"

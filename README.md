@@ -9,8 +9,10 @@ Supports:
 |    **EdDSA** | Curve25519 |  Tezos, Libra |
 
 ## Installation:
-1. Install [nightly Rust](https://github.com/rust-lang/rustup.rs#installation)<br>
-(tested with: rustc 1.39.0-nightly (521d78407 2019-08-25))
+1. Install [Node.js](https://nodejs.org/en/download/)<br>
+(tested on Node 10)
+2. Install [nightly Rust](https://github.com/rust-lang/rustup.rs#installation)<br>
+(tested on rustc 1.38.0-nightly (0b680cfce 2019-07-09))
 2. Install the package:
 ```bash
 $ npm install @kzen-networks/thresh-sig
