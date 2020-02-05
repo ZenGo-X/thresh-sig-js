@@ -4,8 +4,12 @@ node_js:
   - stable
 
 before_install:
-  - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  - curl -sSf https://build.travis-ci.org/files/rustup-init.sh | sh -s -- --default-toolchain=$TRAVIS_RUST_VERSION --profile=minimal -y
+  - export PATH=${TRAVIS_HOME}/.cargo/bin:$PATH
   - rustup override set nightly-2019-07-10
+  - rustc --version
+  - rustup --version
+  - cargo --version
 
 script:
   - npm run build
