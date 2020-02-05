@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/KZen-networks/thresh-sig.svg?branch=master)](https://travis-ci.org/KZen-networks/thresh-sig)
+[![Build Status](https://travis-ci.org/KZen-networks/thresh-sig-js.svg?branch=master)](https://travis-ci.org/KZen-networks/thresh-sig-js)
 
 Two Party signatures JS SDK 
 =====================================
