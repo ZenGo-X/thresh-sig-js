@@ -17,7 +17,7 @@ describe('Two-Party Schnorr signature tests', () => {
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-        await sleep(1000); // wait for server to launch
+        await sleep(10000); // wait for server to launch
     });
 
     after(() => {
