@@ -15,7 +15,7 @@ Supports:
 (tested on Node 10)
 2. Install [nightly Rust](https://github.com/rust-lang/rustup.rs#installation)<br>
 (tested on rustc 1.38.0-nightly (0b680cfce 2019-07-09))
-2. Install the package:
+3. Install the package:
 ```bash
 $ npm install @kzen-networks/thresh-sig
 ```

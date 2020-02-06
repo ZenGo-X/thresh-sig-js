@@ -18,7 +18,7 @@ describe('Two-Party EdDSA signature tests', () => {
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-        await sleep(10000); // wait for server to launch
+        await sleep(1000); // wait for server to launch
     });
 
     after(() => {
