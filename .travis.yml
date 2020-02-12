@@ -2,6 +2,10 @@ language: node_js
 node_js:
   - 10
 
+env:
+  - osx
+  - linux
+
 before_install:
   - curl -sSf https://build.travis-ci.org/files/rustup-init.sh | sh -s -- --default-toolchain=1.38.0 --profile=minimal -y
   - export PATH=${TRAVIS_HOME}/.cargo/bin:$PATH
