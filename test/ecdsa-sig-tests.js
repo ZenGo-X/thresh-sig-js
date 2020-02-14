@@ -18,7 +18,7 @@ describe('Two-Party ECDSA tests', () => {
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-        await sleep(5000); // wait for server to launch
+        return sleep(5000); // wait for server to launch
     });
 
     after(() => {

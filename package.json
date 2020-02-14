@@ -13,7 +13,7 @@
     "build-rust": "neon build -r",
     "build-ts": "tsc",
     "build": "npm run build-rust && npm run build-ts",
-    "test": "mocha",
+    "test": "mocha --timeout=20000",
     "prepublishOnly": "npm run build && npm test",
     "postinstall": "npm run build-rust"
   },
