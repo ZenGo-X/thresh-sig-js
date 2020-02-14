@@ -7,6 +7,8 @@ os:
   - linux
 
 before_install:
+  - sudo apt-get update
+  - sudo apt-get install libgmp3-dev pkg-config libssl-dev clang libclang-dev
   - curl -sSf https://build.travis-ci.org/files/rustup-init.sh | sh -s -- --default-toolchain=1.38.0 --profile=minimal -y
   - export PATH=${TRAVIS_HOME}/.cargo/bin:$PATH
   - rustup override set nightly-2019-07-10
