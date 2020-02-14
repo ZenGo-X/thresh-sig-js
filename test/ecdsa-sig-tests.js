@@ -18,7 +18,7 @@ describe('Two-Party ECDSA tests', () => {
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-        await sleep(1000); // wait for server to launch
+        await sleep(5000); // wait for server to launch
     });
 
     after(() => {
@@ -29,7 +29,7 @@ describe('Two-Party ECDSA tests', () => {
         p2MasterKeyShare = await p2.generateMasterKey();
         expect(p2MasterKeyShare).to.be.a('object');
         expect(p2MasterKeyShare.id).to.be.a('string');
-    }).timeout(10000);
+    }).timeout(15000);
 
     it('get child share', async () => {
         const p2ChildShare = p2.getChildShare(p2MasterKeyShare, 0, 0);
