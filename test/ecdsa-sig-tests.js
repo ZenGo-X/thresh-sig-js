@@ -29,7 +29,7 @@ describe('Two-Party ECDSA tests', () => {
         p2MasterKeyShare = await p2.generateMasterKey();
         expect(p2MasterKeyShare).to.be.a('object');
         expect(p2MasterKeyShare.id).to.be.a('string');
-    }).timeout(15000);
+    }).timeout(30000);
 
     it('get child share', async () => {
         const p2ChildShare = p2.getChildShare(p2MasterKeyShare, 0, 0);
