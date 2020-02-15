@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - 10
+
+os:
+  - osx
+
+before_install:
+  - curl -sSf https://build.travis-ci.org/files/rustup-init.sh | sh -s -- --default-toolchain=1.38.0 --profile=minimal -y
+  - export PATH=${TRAVIS_HOME}/.cargo/bin:$PATH
+  - rustup override set nightly-2019-07-10
+  - rustc --version
+  - rustup --version
+  - cargo --version
+
+script:
+  - npm run build
+  - npm test

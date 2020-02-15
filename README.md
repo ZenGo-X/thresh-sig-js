@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/KZen-networks/thresh-sig-js.svg?branch=master)](https://travis-ci.org/KZen-networks/thresh-sig-js)
+[![NPM](https://img.shields.io/npm/v/@kzen-networks/thresh-sig.svg)](https://www.npmjs.org/package/@kzen-networks/thresh-sig)
+
 Two Party signatures JS SDK 
 =====================================
 Supports:
@@ -9,11 +12,16 @@ Supports:
 |    **EdDSA** | Curve25519 |  Tezos, Libra |
 
 ## Installation:
-1. Install [Node.js](https://nodejs.org/en/download/)<br>
+1. If on Linux, install needed packages:
+```sh
+$ apt-get update
+$ apt-get install libgmp3-dev, pkg-config, libssl-dev, clang, libclang-dev
+```
+2. Install [Node.js](https://nodejs.org/en/download/)<br>
 (tested on Node 10)
-2. Install [nightly Rust](https://github.com/rust-lang/rustup.rs#installation)<br>
+3. Install [nightly Rust](https://github.com/rust-lang/rustup.rs#installation)<br>
 (tested on rustc 1.38.0-nightly (0b680cfce 2019-07-09))
-3. Install the package:
+4. Install the package:
 ```bash
 $ npm install @kzen-networks/thresh-sig
 ```
