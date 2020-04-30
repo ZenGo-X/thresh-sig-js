@@ -15,7 +15,9 @@
     "build": "npm run build-rust && npm run build-ts",
     "test": "mocha",
     "prepublishOnly": "npm run build && npm test",
-    "postinstall": "npm run build-rust"
+    "postinstall": "npm run build-rust",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -32,10 +34,12 @@
   "dependencies": {
     "@types/elliptic": "^6.4.9",
     "elliptic": "^6.5.1",
-    "neon-cli": "^0.2.0"
+    "neon-cli": "^0.2.0",
+    "snyk": "^1.316.1"
   },
   "engines": {
     "node": "^10.16.0",
     "npm": "^6.9.0"
-  }
+  },
+  "snyk": true
 }
