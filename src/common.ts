@@ -12,6 +12,11 @@ export interface GE {
     y: BigInt
 }
 
+export interface DecryptionKey {
+    p: BigInt,
+    q: BigInt,
+}
+
 export interface EncryptionKey {
     n: BigInt;
 }
