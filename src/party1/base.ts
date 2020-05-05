@@ -5,12 +5,12 @@ import path from "path";
 
 export class Party1 {
 
-    private static ROCKSDB_PATH = path.join(__dirname, '../../../db');
+    private static ROCKSDB_PATH = path.join(process.cwd(), './db');
 
     private rocksdb: any;  // 2P-Sign messages DB
 
     public constructor() {
-        this.initRocksDb();
+        this.initRocksDb()
     }
 
     public launchServer() {
