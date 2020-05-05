@@ -1,9 +1,7 @@
-import {bindings} from "./bindings";
-import RocksDB from 'rocksdb';
-import util from "util";
-import path from "path";
-import {BigInt, DecryptionKey, EncryptionKey, FE, GE} from "./common";
+import {bindings} from "../bindings";
+import {BigInt, DecryptionKey, EncryptionKey, FE, GE} from "../common";
 import {curve, ec as EC} from 'elliptic';
+import {Party1} from "./base";
 const CURVE = "secp256k1";
 const ec = new EC(CURVE);
 
@@ -47,29 +45,23 @@ export class EcdsaParty1Share {
     }
 }
 
-export class Party1 {
-
-    private static ROCKSDB_PATH = path.join(__dirname, '../../db');
-
-    private rocksdb: any;  // 2P-Sign messages DB
+export class EcdsaParty1 extends Party1 {
 
     public constructor() {
-        this.initRocksDb();
+        super();
     }
 
-    public launchServer() {
-        bindings.p1_launch_server();
+    public async getMasterKey(masterKeyId: string): Promise<EcdsaParty1Share> {
+        const searchString = `pass_through_guest_user_${masterKeyId}_Party1MasterKey`;
+        await this.getRocksDb().open({ readOnly: true });
+        return JSON.parse(await this.getRocksDb().get(searchString, {asBuffer: false}));
     }
 
-    public async getMasterKey(p1MasterKeyId: string): Promise<EcdsaParty1Share> {
-        const searchString = `pass_through_guest_user_${p1MasterKeyId}_Party1MasterKey`;
-        await this.rocksdb.open({ readOnly: true });
-        return JSON.parse(await this.rocksdb.get(searchString, {asBuffer: false}));
-    }
-
-    private initRocksDb() {
-        this.rocksdb = RocksDB(Party1.ROCKSDB_PATH);
-        this.rocksdb.open = util.promisify(this.rocksdb.open);
-        this.rocksdb.get = util.promisify(this.rocksdb.get);
+    public getChildShare(p1MasterKeyShare: EcdsaParty1Share, xPos: number, yPos: number): EcdsaParty1Share {
+        const res = JSON.parse(bindings.p1_ecdsa_get_child_share(
+            JSON.stringify(p1MasterKeyShare),
+            BigInt.fromNumber(xPos),
+            BigInt.fromNumber(yPos)));
+        return EcdsaParty1Share.fromPlain(res);
     }
 }
