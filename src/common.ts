@@ -1,11 +1,10 @@
-export class BigInt extends String {
-    public static fromNumber(n: number) {
-        return JSON.stringify(n.toString(16));
-    }
-}
-
+export type BigInt = string;
 export type FE = BigInt;
 export const FE_BYTES_SIZE = 32;
+
+export function stringifyHex(n: number) {
+    return JSON.stringify(n.toString(16));
+}
 
 export interface GE {
     x: BigInt,

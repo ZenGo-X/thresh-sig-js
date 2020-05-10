@@ -1,5 +1,5 @@
 import {bindings} from "../bindings";
-import {BigInt, DecryptionKey, EncryptionKey, FE, GE} from "../common";
+import {BigInt, DecryptionKey, EncryptionKey, FE, GE, stringifyHex} from "../common";
 import {curve, ec as EC} from 'elliptic';
 import {Party1} from "./base";
 const CURVE = "secp256k1";
@@ -47,8 +47,8 @@ export class EcdsaParty1Share {
 
 export class EcdsaParty1 extends Party1 {
 
-    public constructor() {
-        super();
+    public constructor(rocksDbDir?: string) {
+        super(rocksDbDir);
     }
 
     public async getMasterKey(masterKeyId: string): Promise<EcdsaParty1Share> {
@@ -60,8 +60,8 @@ export class EcdsaParty1 extends Party1 {
     public getChildShare(p1MasterKeyShare: EcdsaParty1Share, xPos: number, yPos: number): EcdsaParty1Share {
         const res = JSON.parse(bindings.p1_ecdsa_get_child_share(
             JSON.stringify(p1MasterKeyShare),
-            BigInt.fromNumber(xPos),
-            BigInt.fromNumber(yPos)));
+            stringifyHex(xPos),
+            stringifyHex(yPos)));
         return EcdsaParty1Share.fromPlain(res);
     }
 }

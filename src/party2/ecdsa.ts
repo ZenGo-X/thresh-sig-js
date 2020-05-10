@@ -1,6 +1,6 @@
 const path = require('path');
 const bindings : any = require(path.join(__dirname, '../../../native'));
-import {BigInt, EncryptionKey, FE, FE_BYTES_SIZE, GE} from '../common';
+import {BigInt, EncryptionKey, FE, FE_BYTES_SIZE, GE, stringifyHex} from '../common';
 import util from 'util';
 bindings.p2_ecdsa_generate_master_key = util.promisify(bindings.p2_ecdsa_generate_master_key);
 bindings.p2_ecdsa_sign = util.promisify(bindings.p2_ecdsa_sign);
@@ -82,8 +82,8 @@ export class EcdsaParty2 {
     public getChildShare(p2MasterKeyShare: EcdsaParty2Share, xPos: number, yPos: number): EcdsaParty2Share {
         const res = JSON.parse(bindings.p2_ecdsa_get_child_share(
             JSON.stringify(p2MasterKeyShare),
-            BigInt.fromNumber(xPos),
-            BigInt.fromNumber(yPos)));
+            stringifyHex(xPos),
+            stringifyHex(yPos)));
         return EcdsaParty2Share.fromPlain(res);
     }
 
@@ -92,8 +92,8 @@ export class EcdsaParty2 {
             this.party1Endpoint,
             JSON.stringify(msgHash.toString('hex')),
             JSON.stringify(childPartyTwoShare),
-            BigInt.fromNumber(xPos),
-            BigInt.fromNumber(yPos)));
+            stringifyHex(xPos),
+            stringifyHex(yPos)));
 
         return EcdsaSignature.fromPlain(res);
     }

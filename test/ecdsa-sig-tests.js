@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const EC = require('elliptic').ec;
 const ec = new EC('secp256k1');
 const {exec} = require('child_process');
+const path = require('path');
 
 const P1_ENDPOINT = 'http://localhost:8000';
 
@@ -44,7 +45,7 @@ describe('Two-Party ECDSA tests', () => {
     });
 
     it('get child public key of party2 should match child public key of party1', async () => {
-        const p1 = new EcdsaParty1();
+        const p1 = new EcdsaParty1(path.join(__dirname, '../db'));
         const p1MasterKeyShare = await p1.getMasterKey(p2MasterKeyShare.id);
         const p1ChildShare = p1.getChildShare(p1MasterKeyShare, 0, 0);
         const p2ChildShare = p2.getChildShare(p2MasterKeyShare, 0, 0);
