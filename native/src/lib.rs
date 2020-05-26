@@ -6,6 +6,7 @@ mod party2;
 
 register_module!(mut cx, {
     cx.export_function("p1_launch_server", party1::launch_server)?;
+    cx.export_function("p1_ecdsa_get_child_share", party1::ecdsa::get_child_share)?;
 
     cx.export_function("p2_ecdsa_generate_master_key", party2::ecdsa::generate_master_key)?;
     cx.export_function("p2_ecdsa_get_child_share", party2::ecdsa::get_child_share)?;
