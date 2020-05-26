@@ -52,6 +52,10 @@ export class EcdsaParty1 extends Party1 {
     }
 
     public async getMasterKey(masterKeyId: string): Promise<EcdsaParty1Share> {
+        if (!this.getRocksDb()) {
+            throw new Error('RocksDB not initialized. The DB path should be passed in the constructor.')
+        }
+
         const searchString = `pass_through_guest_user_${masterKeyId}_Party1MasterKey`;
         await this.getRocksDb().open({ readOnly: true });
         return JSON.parse(await this.getRocksDb().get(searchString, {asBuffer: false}));
