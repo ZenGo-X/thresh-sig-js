@@ -14,7 +14,7 @@ crate-type = ["staticlib", "dylib"]
 neon-build = "0.2.0"
 
 [dependencies]
-neon = "0.2.0"
+neon = "0.10.1"
 serde = "1.0.75"
 serde_json = "1.0.26"
 serde_derive = "1.0.75"
