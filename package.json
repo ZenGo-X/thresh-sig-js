@@ -23,7 +23,7 @@
     "@types/node": "^11.13.8",
     "@zilliqa-js/crypto": "^0.7.5",
     "chai": "^4.2.0",
-    "mocha": "^6.1.4",
+    "mocha": "^10.2.0",
     "ts-mocha": "^7.0.0",
     "ts-node": "^8.1.0",
     "tslib": "^1.9.3",
